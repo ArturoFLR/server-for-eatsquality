@@ -13,7 +13,7 @@ async function loginUser (userData) {
 			userEmailExists = true;
 			userPassword = users[i].password;
 			userName = `${users[i].name} ${users[i].lastName}`;
-			userRole = users[i].userType;
+			userRole = users[i].userRole;
 			userMail = users[i].email;
 			break;
 		}

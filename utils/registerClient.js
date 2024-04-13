@@ -1,32 +1,30 @@
 const users = require("../data/users");
-const genUserToken = require("./genUserToken");
+// const genUserToken = require("./genUserToken");
 const generateId = require("./generateId");
 
-async function registerUser (userData) {
+function registerClient (userData) {
 	const isEmailDuplicate = checkDuplicateEmail(userData.userEmail);
 
 	if (!isEmailDuplicate) {
 		const id = generateId();
-		const street= userData.userAddressStreet;
-		const city= userData.userAddressCity;
-		const country= userData.userAddressCountry;
-		const address = `${street}, ${city}, ${country} `;
 	
 		const newUser = {
 			id,
 			name: userData.userName,
 			lastName: userData.userLastName,
 			email: userData.userEmail,        
-			address,
+			address: userData.userAddress,
+			zip: userData.userZipCode,
+			phone: userData.userPhoneNumber,
 			password: userData.userPassword,
-			userType: "user"
+			userRole: "c"
 		};
 	
-		const newUserToken = await genUserToken(userData.userPassword);
+		// const newUserToken = await genUserToken(userData.userPassword);
 	
 		users.push(newUser);
 
-		return newUserToken;
+		// return newUserToken;
 	} else {
 		throw new Error("The email already exists!");
 	}
@@ -44,4 +42,4 @@ function checkDuplicateEmail (email) {
 }
 
 
-module.exports = registerUser;
+module.exports = registerClient;

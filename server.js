@@ -7,13 +7,16 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
 
-const registerUser = require("./utils/registerUser");
+
 const SESSIONS = require("./data/sessions");
 const loginUser = require("./utils/loginUser");
 const getBestPublications = require("./utils/getBestPublications");
 const createPublication = require("./utils/createPublication");
 const getAllPublications = require("./utils/getAllPublications");
 const mockDataForCharts = require("./data/mockDataForCharts");
+const registerClient = require("./utils/registerClient");
+const registerRestaurant = require("./utils/registerRestaurant");
+const generateId = require("./utils/generateId");
 
 
 
@@ -29,32 +32,52 @@ app.listen(3000,);
 
 
 
-//REGISTER
+//REGISTRAR USUARIO
 
-app.post("/register", (req, res) => {
-	const newUserData = req.body;
+app.post("/register/client", (req, res) => {
+	const newClientData = req.body;
 
-	registerUser(newUserData)
-		.then( (token) => {
-			SESSIONS.set(token, {userName: `${newUserData.userName} ${newUserData.userLastName}`, userRole: "user", userMail: newUserData.userEmail});
+	try{
+		registerClient(newClientData);
 
-			const response = {
-				userName: `${newUserData.userName} ${newUserData.userLastName}`,
-				userRole: "user"
-			};
-
-			res.cookie("userId", token, {
-				secure: true,								
-				httpOnly: true,
-				sameSite: "none",
-			})
-				.status(200)
-				.send( JSON.stringify(response) );
-		})
-		.catch( (err) => {
-			res.status(400).send(err.message);
-		});
+		res.status(200).json("Ok");
+	}
+	catch{ (err) => {
+		res.status(400).send(err.message);
+	};
+	}
 });
+
+
+
+
+//REGISTRAR RESTAURANTE
+
+app.post("/register/restaurant", (req, res) => {
+	const userToken = req.cookies.userId;
+	const session = SESSIONS.get(userToken);
+	const { restaurantImg } = req.files;
+	const newRestaurantData = req.body;
+
+	if (session) {
+		try{
+			const newLogoName = `${generateId()}${restaurantImg.name}`;
+			restaurantImg.mv(__dirname + "/public/images/rest_logos" + newLogoName);			// Move the uploaded image to our images folder
+
+			registerRestaurant(newRestaurantData, newLogoName, session.userMail);
+			res.status(200).json("Ok");
+		}
+		catch{ (err) => {
+			res.status(400).send(err.message);
+		};
+		}
+
+	} else {
+		res.status(400).send( JSON.stringify("No open session for this userId") );
+	}
+});
+
+
 
 // CHECK USER SESSION
 
@@ -108,6 +131,7 @@ app.get("/logout", (req, res) => {
 
 	if (session) {
 		SESSIONS.delete(userToken);
+
 		res.cookie("userId", "", {
 			secure: true,								
 			httpOnly: true,

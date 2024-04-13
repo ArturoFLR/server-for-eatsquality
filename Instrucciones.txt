@@ -1,11 +1,12 @@
 "npm start"	 => 	Arranca el servidor en http://localhost:3000
-Están autorizadas peticiones hechas desde la URL http://localhost:5173 (por defecto el puerto en que arranca el "dev" de VSC).
+Están autorizadas peticiones hechas desde la URL http://localhost:5173 (por defecto el puerto en que arranca el "dev" de VSC) y la URL http://localhost:4173
+(donde arranca el "build" de VSC).
 Si queremos cambiar el puerto desde donde hacemos las peticiones, lo hacemos en el fichero "server.js". Cambiamos la URL en la línea:
 
 	app.use(cors( {origin: "http://localhost:5173", credentials: true} ));				(Está dentro del bloque de Middlewares, al comienzo del archivo)
 
 
-Los usuarios que creamos lo hacen con el rol por defecto "user". Si necesitamos hacer pruebas con los demás roles podemos tomar el usuario y contraseña de un "producer" o "admin" del fichero "data/users.js"
+Los usuarios que creamos tienen el rol por defecto "user". Si necesitamos hacer pruebas con los demás roles podemos tomar el usuario y contraseña de un "producer" o "admin" del fichero "data/users.js"
 
 
 REGISTRAR NUEVO USUARIO:

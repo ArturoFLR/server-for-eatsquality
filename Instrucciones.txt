@@ -1,0 +1,230 @@
+"npm start"	 => 	Arranca el servidor en http://localhost:3000
+Están autorizadas peticiones hechas desde la URL http://localhost:5173 (por defecto el puerto en que arranca el "dev" de VSC).
+Si queremos cambiar el puerto desde donde hacemos las peticiones, lo hacemos en el fichero "server.js". Cambiamos la URL en la línea:
+
+	app.use(cors( {origin: "http://localhost:5173", credentials: true} ));				(Está dentro del bloque de Middlewares, al comienzo del archivo)
+
+
+Los usuarios que creamos lo hacen con el rol por defecto "user". Si necesitamos hacer pruebas con los demás roles podemos tomar el usuario y contraseña de un "producer" o "admin" del fichero "data/users.js"
+
+
+REGISTRAR NUEVO USUARIO:
+
+**** Nombre de los Campos a Enviar:
+		userName:
+		userLastName:
+		userEmail:
+		userAddressStreet:
+		userAddressCity:
+		userAddressCountry:
+		userPassword:
+
+	Cuando se crea el usuario le añade un campo "id" numérico único.
+	También le añade el campo "userType", con el valor "user"  (Más adelante se podrá cambiar a "producer" o "admin")
+
+
+
+**** Formato de Peticiones:
+
+POST  con un FormData a "http://localhost:3000/register"
+
+Content-Type:	multipart/form-data
+
+**** Devuelve:
+
+JSON con un token alfanumérico del usuario (código 200) ó Error (código 400). Axios convierte automáticamente a string este JSON.
+Si el usuario se puede registrar correctamente, se envía una cookie de sesión llamada "userId" con el token necesario.
+Esta cookie no puede ser vista ni modificada desde el cliente, sólo por el servidor (por motivos de seguridad), pero será enviada
+desde el cliente junto con cualquier petición, si tenemos activado (withCredentials: true  en Axios // credentials: "include" en un fetch)
+
+También envía el nombre del cliente en formato JSON, para que podamos usarlo en la barra de navegación.
+
+No permite registrar usuarios con un email que ya exista en la base de datos (Error 400 con mensaje "The email already exists!")
+
+
+///////////////////////////////////////////////////////////////
+
+
+COMPROBAR SESIÓN DEL USUARIO:
+
+Si el usuario se acaba de registrar o de logarse, el servidor habrá devuelto una cookie con el token necesario para acceder a la información
+protegida (mantener la sesión abierta).
+Al iniciar la página por primera vez o al recargarla podemos acceder a este endpoint para comprobar si el usuario tiene o no abierta la sesión.
+
+
+
+**** Formato de Peticiones:
+
+GET a http://localhost:3000/userSession
+
+Debemos activar el envío de cookies junto con nuestra petición (withCredentials: true  en Axios // credentials: "include" en un fetch )
+
+
+**** Devuelve: 
+
+Si hay una sesión activa con el userId (token) enviado por el cliente, un objeto con los campos: 
+	{
+		userName		 (nombre de usuario que consta en la sesión)
+		userRole 		 (rol del usuario: "user" || "producer" || "admin")
+	}
+
+
+Si no hay ninguna sesión activa con el token enviado por el cliente, Error 400 con el texto "No open session for this userId".
+
+
+
+///////////////////////////////////////////////////////////////
+
+
+LOGIN:
+
+
+**** Nombre de los Campos a Enviar:
+
+	userEmail:
+	userPassword:
+
+
+**** Formato de Peticiones:
+
+POST con un FormData a http://localhost:3000/login
+
+
+**** Devuelve: 
+
+Si los datos enviados son correctos devuelve un objeto JSON con los datos:
+
+	{
+		userName:
+		userRole: 
+	}
+
+Además envía una cookie de sesión que permite acceder a los datos a los que está autorizado este usuario según su rol.
+
+Si los datos enviados no son correctos, devuelve Error 400 con el texto "Email / Password incorrect".
+
+
+
+///////////////////////////////////////////////////////////////
+
+
+LOGOUT:
+
+Si el cliente tiene una cookie con un token de sesión activo, elimina esta sesión.
+
+**** Formato de Peticiones:
+
+GET a http://localhost:3000/logout
+
+Debemos activar el envío de cookies junto con nuestra petición (withCredentials: true  en Axios // credentials: "include" en un fetch ), 
+para que el servidor sepa qué sesión eliminar.
+
+
+**** Devuelve: 
+El mensaje "Logout" con estado 200 en formato JSON si cierra la sesión.
+Si no había ninguna sesión para ese token, no devuelve nada.
+
+
+///////////////////////////////////////////////////////////////
+
+
+OBTENER LAS 3 PUBLICACIONES MEJOR VALORADAS:
+
+**** Formato de Peticiones:
+
+GET a http://localhost:3000//publications/best
+
+Cualquier usuario tiene acceso a ellas, por lo que no hay que adjuntar nada, ni siquiera la cookie de sesión.
+
+
+**** Devuelve: 
+
+Un  JSON con un array de las mejores publicaciones (en forma de objetos con las siguientes propiedades):
+
+	{
+			id:		(number)
+			author: 	(string con el name)
+			mainImage:	(string con URL)
+			title:
+			mainText:
+			publicationDate:
+			score:     (number)
+			comments: 		(Aray de comentarios)
+	}
+
+	Los comentarios son objetos con las siguientes propiedades:
+
+	{
+		id: 	(number)
+		author: (objeto user),
+		content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris tincidunt ut velit ut consequat. Donec aliquet finibus sollicitudin. Quisque finibus ex pulvinar ligula venenatis, vitae porttitor enim varius. Cras imperdiet nunc et pretium pharetra. Ut quis aliquet ligula, ut tempor nulla. Suspendisse potenti. Vivamus eu ante in ex tincidunt laoreet at quis odio. Phasellus elementum tempus lectus, vel auctor nisl dictum non. Aenean tristique ipsum eros, et maximus sem commodo ut. Pellentesque in pellentesque lacus. Pellentesque quis malesuada purus.",
+		publicationDate: "2024-01-25T12:38:01.760Z"
+	}
+
+
+///////////////////////////////////////////////////////////////
+
+
+OBTENER TODAS LAS PUBLICACIONES:
+
+Sólo puede obtenerlas un usuario con una sesión abierta.
+
+**** Formato de Peticiones:
+
+GET a http://localhost:3000//publications/all
+
+Debemos activar el envío de cookies junto con nuestra petición (withCredentials: true  en Axios // credentials: "include" en un fetch ), 
+
+**** Devuelve: 
+
+Si el usuario tiene una sesión abierta devuelve un JSON con un array que contiene las publicaciones (objetos con la siguiente estructura):
+
+{
+	id: 
+	title: 
+	author: 	(string con el nombre)
+	publicationDate: 
+	mainImage:  (string con URL)
+	comments: 	(Aray de comentarios)
+	score: 		(number)
+	mainText: 
+}
+
+Los comentarios son objetos con las siguientes propiedades:
+
+	{
+		id: 	(number)
+		author: (objeto user),
+		content: (string)
+		publicationDate: 
+	}
+
+
+Si el usuario no está autorizado devuelve Error 400 con el texto "You must be registered to access all publications".
+
+
+///////////////////////////////////////////////////////////////
+
+
+CREAR UNA NUEVA PUBLICACIÓN:
+
+El servidor sólo permite subir publicaciones a usuarios con con una sesión activa, y sólo si tienen el rol "producer" o "admin", 
+
+**** Nombre de los Campos a Enviar:
+
+	title:
+	mainText:
+	image:	(un archivo de imagen subido con un <input type=""file>)
+
+El servidor completa los datos con un id, fecha de publicación, autor...
+
+**** Formato de Peticiones:
+
+POST con un FormData a http://localhost:3000/publications/upload
+
+Debemos activar el envío de cookies junto con nuestra petición (withCredentials: true  en Axios // credentials: "include" en un fetch ), 
+
+**** Devuelve: 
+
+Si el usuario tiene la sesión activa y es "producer" o "admin", un mensaje de confirmación "Publication created" con status 200.
+Si no cumple estos requisitos, manda un Error 400 con texto "No open session for this userId" o "You need to be a producer or admin to publish publications"

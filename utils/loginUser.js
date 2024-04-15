@@ -5,7 +5,7 @@ async function loginUser (userData) {
 	let userEmailExists = false;
 	let userPassword = "";
 	let userName = "";
-	let userRole = "";
+	let userRoles = "";
 	let userMail = "";
 
 	for (let i = 0; i < users.length; i++) {
@@ -13,7 +13,7 @@ async function loginUser (userData) {
 			userEmailExists = true;
 			userPassword = users[i].password;
 			userName = `${users[i].name} ${users[i].lastName}`;
-			userRole = users[i].userRole;
+			userRoles = users[i].userRoles;
 			userMail = users[i].email;
 			break;
 		}
@@ -24,12 +24,12 @@ async function loginUser (userData) {
 
 		return {
 			userName,
-			userRole,
+			userRoles,
 			userMail, 
 			userToken
 		};
 	} else {
-		throw new Error("Email / Password incorrect");
+		throw new Error("Email / Contraseña incorrectos");
 	}
 }
 

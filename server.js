@@ -10,10 +10,6 @@ const fileUpload = require("express-fileupload");
 
 const SESSIONS = require("./data/sessions");
 const loginUser = require("./utils/loginUser");
-const getBestPublications = require("./utils/getBestPublications");
-const createPublication = require("./utils/createPublication");
-const getAllPublications = require("./utils/getAllPublications");
-const mockDataForCharts = require("./data/mockDataForCharts");
 const registerClient = require("./utils/registerClient");
 const registerRestaurant = require("./utils/registerRestaurant");
 const generateId = require("./utils/generateId");
@@ -39,12 +35,10 @@ app.post("/register/client", (req, res) => {
 
 	try{
 		registerClient(newClientData);
-
 		res.status(200).json("Ok");
 	}
-	catch{ (err) => {
-		res.status(400).send(err.message);
-	};
+	catch (err) {
+		res.status(409).json(err.message);
 	}
 });
 
@@ -62,18 +56,17 @@ app.post("/register/restaurant", (req, res) => {
 	if (session) {
 		try{
 			const newLogoName = `${generateId()}${restaurantImg.name}`;
-			restaurantImg.mv(__dirname + "/public/images/rest_logos" + newLogoName);			// Move the uploaded image to our images folder
+			const newUserRoles = registerRestaurant(newRestaurantData, newLogoName, session.userMail);
+			SESSIONS.set(userToken, {userName: session.userName, userRoles: newUserRoles, userMail: session.userMail});
+			restaurantImg.mv(__dirname + "/public/images/rest_logos/" + newLogoName);			// Move the uploaded image to our images folder
 
-			registerRestaurant(newRestaurantData, newLogoName, session.userMail);
 			res.status(200).json("Ok");
 		}
-		catch{ (err) => {
-			res.status(400).send(err.message);
-		};
+		catch (err) {
+			res.status(409).json(err.message);
 		}
-
 	} else {
-		res.status(400).send( JSON.stringify("No open session for this userId") );
+		res.status(401).send( JSON.stringify("No open session for this userId") );
 	}
 });
 
@@ -88,12 +81,12 @@ app.get("/userSession", (req, res) => {
 	if (session) {
 		const response = {
 			userName: session.userName,
-			userRole: session.userRole
+			userRoles: session.userRoles
 		};
 
 		res.status(200).send( JSON.stringify(response) );
 	} else {
-		res.status(400).send( JSON.stringify("No open session for this userId") );
+		res.status(401).send( JSON.stringify("No open session for this userId") );
 	}
 });
 
@@ -105,7 +98,7 @@ app.post("/login", (req, res) => {
 
 	loginUser(userData)
 		.then( (data) => {
-			SESSIONS.set(data.userToken, {userName: data.userName, userRole: data.userRole, userMail: data.userMail});
+			SESSIONS.set(data.userToken, {userName: data.userName, userRoles: data.userRoles, userMail: data.userMail});
 			res.cookie("userId", data.userToken, {
 				secure: true,								// Borrar esto si no funciona en cliente (no es https).
 				httpOnly: true,
@@ -114,11 +107,11 @@ app.post("/login", (req, res) => {
 				.status(200)
 				.send( JSON.stringify({
 					userName: data.userName,
-					userRole: data.userRole
+					userRoles: data.userRoles
 				}) );
 		})
 		.catch( (err) => {
-			res.status(400).send(err.message);
+			res.status(401).send(err.message);
 		});
 });
 
@@ -150,56 +143,47 @@ app.use(express.static("public"));
 
 // GET BEST 3 PUBLICATIONS
 
-app.get("/publications/best", (req, res) => {
-	const response = getBestPublications(6);
+// app.get("/publications/best", (req, res) => {
+// 	const response = getBestPublications(6);
 
-	res.json(response);
-});
+// 	res.json(response);
+// });
 
 
 // GET ALL PUBLICATIONS
 
-app.get("/publications/all", (req, res) => {
-	const userToken = req.cookies.userId;
-	const session = SESSIONS.get(userToken);
+// app.get("/publications/all", (req, res) => {
+// 	const userToken = req.cookies.userId;
+// 	const session = SESSIONS.get(userToken);
 
-	if (session) {
-		const response = getAllPublications();
-		res.status(200).json(response);
-	} else {
-		res.status(400).send( JSON.stringify("You must be registered to access all publications") );
-	}
-});
+// 	if (session) {
+// 		const response = getAllPublications();
+// 		res.status(200).json(response);
+// 	} else {
+// 		res.status(400).send( JSON.stringify("You must be registered to access all publications") );
+// 	}
+// });
 
 
 // UPLOAD A NEW PUBLICATION
 
-app.post("/publications/upload", (req, res) => {
-	const { image } = req.files;
-	const userToken = req.cookies.userId;
-	const session = SESSIONS.get(userToken);
+// app.post("/publications/upload", (req, res) => {
+// 	const { image } = req.files;
+// 	const userToken = req.cookies.userId;
+// 	const session = SESSIONS.get(userToken);
 
-	if (session) {
-		if (session.userRole !== "producer" && session.userRole !== "admin") {
-			res.status(400).send( JSON.stringify("You need to be a producer or admin to publish publications") );
-		} else {
-			image.mv(__dirname + "/public/images/" + image.name);			// Move the uploaded image to our images folder
+// 	if (session) {
+// 		if (session.userRoles !== "producer" && session.userRoles !== "admin") {
+// 			res.status(400).send( JSON.stringify("You need to be a producer or admin to publish publications") );
+// 		} else {
+// 			image.mv(__dirname + "/public/images/" + image.name);			// Move the uploaded image to our images folder
 		
-			createPublication(req.body, session.userMail, image);
+// 			createPublication(req.body, session.userMail, image);
 			
-			res.status(200).send("Publication created");
-		}
+// 			res.status(200).send("Publication created");
+// 		}
 
-	} else {
-		res.status(400).send( JSON.stringify("No open session for this userId") );
-	}
-});
-
-
-// GET CHARTS DATA
-
-app.get("/charts/all", (req, res) => {
-	const response = mockDataForCharts;
-
-	res.json(response);
-});
+// 	} else {
+// 		res.status(400).send( JSON.stringify("No open session for this userId") );
+// 	}
+// });

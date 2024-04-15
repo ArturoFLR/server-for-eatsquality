@@ -17,14 +17,11 @@ function registerClient (userData) {
 			zip: userData.userZipCode,
 			phone: userData.userPhoneNumber,
 			password: userData.userPassword,
-			userRole: "c"
+			userRoles: "c"
 		};
-	
-		// const newUserToken = await genUserToken(userData.userPassword);
-	
+		
 		users.push(newUser);
 
-		// return newUserToken;
 	} else {
 		throw new Error("The email already exists!");
 	}

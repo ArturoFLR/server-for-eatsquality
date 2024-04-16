@@ -12,7 +12,7 @@ const users = [
 			restaurantAddress: "C/ Umbría 16, Soto del Real, Madrid, España",
 			restaurantZipCode: "29784",
 			restaurantPhoneNumber: "1234567890",
-			logo: "http://localhost:3000/images/rest_logos/085645755comida-y-sonrisas.webp",
+			logo: "http://localhost:3000/images/rest_logos/comida-y-sonrisas.webp",
 			orders: [],
 			menu: []
 		}
@@ -30,7 +30,7 @@ const users = [
 			restaurantAddress: "C/ San Juan 26, Manzanares del Real, Madrid, España",
 			restaurantZipCode: "29984",
 			restaurantPhoneNumber: "1386459215",
-			logo: "http://localhost:3000/images/rest_logos/081818125755cacarola.png",
+			logo: "http://localhost:3000/images/rest_logos/cacarola.png",
 			orders: [],
 			menu: []
 		}
@@ -48,7 +48,7 @@ const users = [
 			restaurantAddress: "C/ Libertas 76, Cercedilla, Madrid, España",
 			restaurantZipCode: "21784",
 			restaurantPhoneNumber: "7359824619",
-			logo: "http://localhost:3000/images/rest_logos/15662000dinner-restaurant.jpg",
+			logo: "http://localhost:3000/images/rest_logos/dinner-restaurant.jpg",
 			orders: [],
 			menu: []
 		}

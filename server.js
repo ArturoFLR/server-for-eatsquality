@@ -13,6 +13,8 @@ const loginUser = require("./utils/loginUser");
 const registerClient = require("./utils/registerClient");
 const registerRestaurant = require("./utils/registerRestaurant");
 const generateId = require("./utils/generateId");
+const addNewMenu = require("./utils/addNewMenu");
+const getRestaurantMenu = require("./utils/getRestaurantMenu");
 
 
 
@@ -22,6 +24,7 @@ app.use(express.urlencoded( {extended: false}) );
 app.use(cors( {origin: ["http://localhost:5173", "http://localhost:4173"], credentials: true} ));
 app.use(cookieParser());
 app.use(fileUpload());
+app.use(express.json());
 
 //PORTS
 app.listen(3000,);
@@ -138,6 +141,49 @@ app.get("/logout", (req, res) => {
 // IMAGES -- GET
 
 app.use(express.static("public"));
+
+
+// UPLOAD RESTAURANT MENU
+
+app.post("/restaurant/menu", (req, res) => {
+	const userToken = req.cookies.userId;
+	const session = SESSIONS.get(userToken);
+	const newRestaurantMenu = req.body;
+
+	if (session) {
+		const isUpdateOk = addNewMenu(newRestaurantMenu, session.userMail);
+
+		if (isUpdateOk) {
+			res.status(200).json("Ok");
+		} else {
+			res.status(409).json("El usuario no figura como restaurante");
+		}
+
+	} else {
+		res.status(401).send( JSON.stringify("El usuario no tiene una sesión activa") );
+	}
+});
+
+
+// GET RESTAURANT MENU
+
+app.get("/restaurant/menu", (req, res) => {
+	const userToken = req.cookies.userId;
+	const session = SESSIONS.get(userToken);
+
+	if (session) {
+		const response = getRestaurantMenu(session.userMail);
+
+		if (response) {
+			res.status(200).json(response);
+		} else {
+			res.status(409).json("El usuario no figura como restaurante");
+		}
+
+	} else {
+		res.status(401).send( JSON.stringify("El usuario no tiene una sesión activa") );
+	}
+});
 
 
 

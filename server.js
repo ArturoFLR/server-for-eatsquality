@@ -15,6 +15,8 @@ const registerRestaurant = require("./utils/registerRestaurant");
 const generateId = require("./utils/generateId");
 const addNewMenu = require("./utils/addNewMenu");
 const getRestaurantMenu = require("./utils/getRestaurantMenu");
+const getRandomRestaurants = require("./utils/getRandomRestaurants");
+const users = require("./data/users");
 
 
 
@@ -175,6 +177,7 @@ app.get("/restaurant/menu", (req, res) => {
 		const response = getRestaurantMenu(session.userMail);
 
 		if (response) {
+			console.log(users);
 			res.status(200).json(response);
 		} else {
 			res.status(409).json("El usuario no figura como restaurante");
@@ -187,13 +190,13 @@ app.get("/restaurant/menu", (req, res) => {
 
 
 
-// GET BEST 3 PUBLICATIONS
+// OBTENER 3 RESTAURANTES ALEATORIOS
 
-// app.get("/publications/best", (req, res) => {
-// 	const response = getBestPublications(6);
+app.get("/restaurant/random", (req, res) => {
+	const response = getRandomRestaurants(3);
 
-// 	res.json(response);
-// });
+	res.json(response);
+});
 
 
 // GET ALL PUBLICATIONS

@@ -465,7 +465,7 @@ const users = [
 		password: "Az%87P_K",
 		userRoles: "cr",
 		restaurant: {
-			restaurantName: "Comida y Sonrisas",
+			restaurantName: "Two Brothers",
 			restaurantAddress: "C/ Umbría 16, Soto del Real, Madrid, España",
 			restaurantZipCode: "8855",
 			restaurantPhoneNumber: "9368524610",

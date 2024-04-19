@@ -17,6 +17,7 @@ const addNewMenu = require("./utils/addNewMenu");
 const getRestaurantMenu = require("./utils/getRestaurantMenu");
 const getRandomRestaurants = require("./utils/getRandomRestaurants");
 const users = require("./data/users");
+const getRestaurantById = require("./utils/getRestaurantById");
 
 
 
@@ -177,7 +178,6 @@ app.get("/restaurant/menu", (req, res) => {
 		const response = getRestaurantMenu(session.userMail);
 
 		if (response) {
-			console.log(users);
 			res.status(200).json(response);
 		} else {
 			res.status(409).json("El usuario no figura como restaurante");
@@ -190,13 +190,28 @@ app.get("/restaurant/menu", (req, res) => {
 
 
 
-// OBTENER 3 RESTAURANTES ALEATORIOS
+// OBTENER 6 RESTAURANTES ALEATORIOS
 
 app.get("/restaurant/random", (req, res) => {
-	const response = getRandomRestaurants(3);
+	const response = getRandomRestaurants(6);
 
-	res.json(response);
+	res.status(200).json(response);
 });
+
+
+// OBTENER UN RESTAURANTE POR SU ID
+app.post("/restaurant/id", (req, res) => {
+	const restaurantId  = req.body.id;
+	console.log(req.body);
+	const response = getRestaurantById(restaurantId);
+
+	if (response) {
+		res.status(200).json(response);
+	} else {
+		res.status(404).send( JSON.stringify("No existe ningún restaurante con esa Id") );
+	}
+});
+
 
 
 // GET ALL PUBLICATIONS

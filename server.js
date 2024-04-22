@@ -18,6 +18,7 @@ const getRestaurantMenu = require("./utils/getRestaurantMenu");
 const getRandomRestaurants = require("./utils/getRandomRestaurants");
 const users = require("./data/users");
 const getRestaurantById = require("./utils/getRestaurantById");
+const getClientOrders = require("./utils/getClientOrders");
 
 
 
@@ -193,7 +194,7 @@ app.get("/restaurant/menu", (req, res) => {
 // OBTENER 6 RESTAURANTES ALEATORIOS
 
 app.get("/restaurant/random", (req, res) => {
-	const response = getRandomRestaurants(6);
+	const response = getRandomRestaurants(8);
 
 	res.status(200).json(response);
 });
@@ -213,6 +214,19 @@ app.post("/restaurant/id", (req, res) => {
 });
 
 
+//OBTENER PEDIDOS DE UN CLIENTE
+app.get("/client/orders", (req, res) => {
+	const userToken = req.cookies.userId;
+	const session = SESSIONS.get(userToken);
+
+	if (session) {
+		const response = getClientOrders(session.userMail);
+
+		res.status(200).json(response);
+	} else {
+		res.status(401).send( JSON.stringify("El usuario no tiene una sesión activa") );
+	}
+});
 
 // GET ALL PUBLICATIONS
 

@@ -9,6 +9,7 @@ const users = [
 		phone: "0126849521",
 		password: "Az$56P_K",
 		userRoles: "cr",
+		orders: [],
 		restaurant: {
 			restaurantName: "Comida y Sonrisas",
 			restaurantAddress: "C/ Umbría 16, Soto del Real, Madrid, España",
@@ -129,6 +130,7 @@ const users = [
 		phone: "9584316790",
 		password: "KMZ45alo$",
 		userRoles: "cr",
+		orders: [],
 		restaurant: {
 			restaurantName: "Cacarola",
 			restaurantAddress: "C/ San Juan 26, Manzanares, Madrid, España",
@@ -238,6 +240,7 @@ const users = [
 		phone: "9164825757",
 		password: "JS4as_dd$",
 		userRoles: "cr",
+		orders: [],
 		restaurant: {
 			restaurantName: "Dinner Restaurant",
 			restaurantAddress: "C/ Libertad 76, Cercedilla, Madrid, España",
@@ -330,6 +333,7 @@ const users = [
 		phone: "4568549960",
 		password: "Al€4m6_$",
 		userRoles: "cr",
+		orders: [],
 		restaurant: {
 			restaurantName: "Cítrico",
 			restaurantAddress: "C/ de la Paloma, 33, Alcobendas, Madrid",
@@ -422,6 +426,7 @@ const users = [
 		phone: "9365845500",
 		password: "Aj$ime00",
 		userRoles: "cr",
+		orders: [],
 		restaurant: {
 			restaurantName: "El Bigotudo",
 			restaurantAddress: "C/ Olvido, 133, Las Rozas, Madrid",
@@ -514,6 +519,7 @@ const users = [
 		phone: "3699633580",
 		password: "Az%87P_K",
 		userRoles: "cr",
+		orders: [],
 		restaurant: {
 			restaurantName: "Two Brothers",
 			restaurantAddress: "C/ Umbría 16, Soto del Real, Madrid, España",
@@ -600,6 +606,7 @@ const users = [
 		phone: "3699633580",
 		password: "Mz%80P_K",
 		userRoles: "cr",
+		orders: [],
 		restaurant: {
 			restaurantName: "Mama Victoria",
 			restaurantAddress: "C/ Umbría 16, Soto del Real, Madrid, España",
@@ -693,6 +700,7 @@ const users = [
 		phone: "3699633580",
 		password: "Mz%8$67&",
 		userRoles: "cr",
+		orders: [],
 		restaurant: {
 			restaurantName: "Dope Sandwich",
 			restaurantAddress: "C/ Umbría 16, Soto del Real, Madrid, España",
@@ -785,6 +793,7 @@ const users = [
 		phone: "3699633580",
 		password: "rZ$8$67&",
 		userRoles: "cr",
+		orders: [],
 		restaurant: {
 			restaurantName: "Steak House",
 			restaurantAddress: "C/ Umbría 16, Soto del Real, Madrid, España",
@@ -867,6 +876,46 @@ const users = [
 			}
 		}
 	},
+	{
+		id: 33997709,
+		name: "Ramón",
+		lastName: "Salazar Díez",
+		email: "killLeonKennedy@gmail.com",
+		address: "C/ Alaitán 24 2B, Colmenar, Madrid, España",
+		zip: "8778",
+		phone: "3699633580",
+		password: "rZ$8$67&",
+		userRoles: "c",
+		orders: [
+			{
+				id: 45588141,
+				restaurantName: "Steak House",
+				state: "En preparación",
+				date: "22-04-2024",
+				products: [
+					{
+						productId: 3232348,
+						name: "Churrasco Argentino",
+						price: 15.99,
+						quantity: 1,
+					},
+					{
+						productId: 1123670,
+						name: "Aros de Cebolla",
+						price: 8.49,
+						quantity: 1,
+					},
+					{
+						productId: 1123670,
+						name: "Tarta de Chocolate",
+						price: 12.99,
+						quantity: 2,
+					},
+				]
+			},
+		],
+	},
+
 ];
 
 

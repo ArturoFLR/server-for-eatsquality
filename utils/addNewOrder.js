@@ -5,19 +5,14 @@ function addNewOrder (newOrders, clientEmail) {
 	addOrderToClient(newOrders, clientEmail);
 	addOrderToRestaurant(newOrders, clientEmail);
 
-	users.map( (user) => {
-		if (user.email === clientEmail) {
-			console.log(user.orders[0]);
-			console.log(user.orders[1]);
-			console.log(user.orders[2]);
-		}
-	});
 	return true;
 }
 
 //Devuelve un array con los diferentes restaurantes que hay en el pedido, metidos dentro de un objeto que servirá como contenedor de los pedidos. Format indica si hay que generarlos con el formato que necesita un cliente o el que necesita un restaurante.
 function getRestaurants (newOrders, format, user) {
 	const restaurants = [];
+	const date = new Date();
+	const simpleDate = date.toLocaleString("es-AR");
 
 	newOrders.map( (order) => {
 		const isRestaurantAdded = restaurants.findIndex( (element) => {
@@ -29,7 +24,7 @@ function getRestaurants (newOrders, format, user) {
 				id: generateId(),
 				restaurantName: order.nameRestaurant,
 				state: "En preparación",
-				date: new Date(),
+				date: simpleDate,
 				products: []
 			};
 
@@ -42,7 +37,7 @@ function getRestaurants (newOrders, format, user) {
 				clientAddress: user.address,
 				clientZip: user.zip,
 				state: "En preparación",
-				date: new Date(),
+				date: simpleDate,
 				products: []
 			};
 
@@ -111,8 +106,10 @@ function addOrderToRestaurant (newOrders, clientEmail) {
 
 	restaurants.map( (restaurant) => {
 		users.map( (user) => {
-			if (user.restaurant.restaurantName === restaurant.restaurantName) {
-				user.restaurant.orders.push(restaurant);
+			if (user.restaurant) {
+				if (user.restaurant.restaurantName === restaurant.restaurantName) {
+					user.restaurant.orders.push(restaurant);
+				}
 			}
 		});
 	});

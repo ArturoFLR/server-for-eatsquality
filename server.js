@@ -192,7 +192,7 @@ app.get("/restaurant/menu", (req, res) => {
 
 
 
-// OBTENER 6 RESTAURANTES ALEATORIOS
+// OBTENER 8 RESTAURANTES ALEATORIOS
 
 app.get("/restaurant/random", (req, res) => {
 	const response = getRandomRestaurants(8);
@@ -242,8 +242,8 @@ app.get("/client/orders", (req, res) => {
 
 	if (session) {
 		try {
-			getClientOrders(session.userMail);
-			res.status(200).json("Ok");
+			const response = getClientOrders(session.userMail);
+			res.status(200).json(response);
 		} catch (error) {
 			res.status(409).json(`Error del servidor: ${error.message}`);
 		}

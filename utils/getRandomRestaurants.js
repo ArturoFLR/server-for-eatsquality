@@ -7,7 +7,7 @@ function getRandomRestaurants(amount) {								//Amount es la cantidad de restau
 	let results = [];
 
 	users.map( (user) => {
-		if (user.restaurant.restaurantName) {
+		if (user.restaurant) {
 			restaurants.push(user);
 		}
 	});
@@ -20,7 +20,7 @@ function getRandomRestaurants(amount) {								//Amount es la cantidad de restau
 
 	selectedRestaurants.map( (restaurant) => {
 		const data = {
-			id: restaurant.id,
+			id: restaurant.restaurant.id,
 			name: restaurant.restaurant.restaurantName,
 			logo: restaurant.restaurant.logo,
 			menu: restaurant.restaurant.menu

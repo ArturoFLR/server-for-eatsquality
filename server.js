@@ -19,6 +19,7 @@ const getRandomRestaurants = require("./utils/getRandomRestaurants");
 const users = require("./data/users");
 const getRestaurantById = require("./utils/getRestaurantById");
 const getClientOrders = require("./utils/getClientOrders");
+const addNewOrder = require("./utils/addNewOrder");
 
 
 
@@ -203,7 +204,6 @@ app.get("/restaurant/random", (req, res) => {
 // OBTENER UN RESTAURANTE POR SU ID
 app.post("/restaurant/id", (req, res) => {
 	const restaurantId  = req.body.id;
-	console.log(req.body);
 	const response = getRestaurantById(restaurantId);
 
 	if (response) {
@@ -214,15 +214,40 @@ app.post("/restaurant/id", (req, res) => {
 });
 
 
+//CREAR NUEVOS PEDIDOS
+app.post("/orders/new", (req, res) => {
+	const userToken = req.cookies.userId;
+	const session = SESSIONS.get(userToken);
+	const newOrder = req.body;
+
+	if (session) {
+		const isUpdateOk = addNewOrder(newOrder, session.userMail);
+
+		if (isUpdateOk) {
+			res.status(200).json("Ok");
+		} else {
+			res.status(500).json("Error del servidor");
+		}
+
+	} else {
+		res.status(401).send( JSON.stringify("El usuario no tiene una sesión activa") );
+	}
+});
+
+
 //OBTENER PEDIDOS DE UN CLIENTE
 app.get("/client/orders", (req, res) => {
 	const userToken = req.cookies.userId;
 	const session = SESSIONS.get(userToken);
 
 	if (session) {
-		const response = getClientOrders(session.userMail);
+		try {
+			getClientOrders(session.userMail);
+			res.status(200).json("Ok");
+		} catch (error) {
+			res.status(409).json(`Error del servidor: ${error.message}`);
+		}
 
-		res.status(200).json(response);
 	} else {
 		res.status(401).send( JSON.stringify("El usuario no tiene una sesión activa") );
 	}

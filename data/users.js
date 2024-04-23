@@ -11,6 +11,7 @@ const users = [
 		userRoles: "cr",
 		orders: [],
 		restaurant: {
+			id: 98364547895322,
 			restaurantName: "Comida y Sonrisas",
 			restaurantAddress: "C/ Umbría 16, Soto del Real, Madrid, España",
 			restaurantZipCode: "2984",
@@ -132,6 +133,7 @@ const users = [
 		userRoles: "cr",
 		orders: [],
 		restaurant: {
+			id: 3355444541400,
 			restaurantName: "Cacarola",
 			restaurantAddress: "C/ San Juan 26, Manzanares, Madrid, España",
 			restaurantZipCode: "8854",
@@ -242,6 +244,7 @@ const users = [
 		userRoles: "cr",
 		orders: [],
 		restaurant: {
+			id: 8523697412,
 			restaurantName: "Dinner Restaurant",
 			restaurantAddress: "C/ Libertad 76, Cercedilla, Madrid, España",
 			restaurantZipCode: "0168",
@@ -324,7 +327,7 @@ const users = [
 		}
 	},
 	{
-		id: 1809153,
+		id: 95125874753,
 		name: "Lorena",
 		lastName: "Rosa Soto",
 		email: "lorenita27soto@gmail.com",
@@ -335,6 +338,7 @@ const users = [
 		userRoles: "cr",
 		orders: [],
 		restaurant: {
+			id: 98364547895322,
 			restaurantName: "Cítrico",
 			restaurantAddress: "C/ de la Paloma, 33, Alcobendas, Madrid",
 			restaurantZipCode: "1225",
@@ -428,6 +432,7 @@ const users = [
 		userRoles: "cr",
 		orders: [],
 		restaurant: {
+			id: 35785226985,
 			restaurantName: "El Bigotudo",
 			restaurantAddress: "C/ Olvido, 133, Las Rozas, Madrid",
 			restaurantZipCode: "5567",
@@ -521,6 +526,7 @@ const users = [
 		userRoles: "cr",
 		orders: [],
 		restaurant: {
+			id: 112598582560,
 			restaurantName: "Two Brothers",
 			restaurantAddress: "C/ Umbría 16, Soto del Real, Madrid, España",
 			restaurantZipCode: "8855",
@@ -608,6 +614,7 @@ const users = [
 		userRoles: "cr",
 		orders: [],
 		restaurant: {
+			id: 332569856470,
 			restaurantName: "Mama Victoria",
 			restaurantAddress: "C/ Umbría 16, Soto del Real, Madrid, España",
 			restaurantZipCode: "8855",
@@ -702,6 +709,7 @@ const users = [
 		userRoles: "cr",
 		orders: [],
 		restaurant: {
+			id: 55464845250,
 			restaurantName: "Dope Sandwich",
 			restaurantAddress: "C/ Umbría 16, Soto del Real, Madrid, España",
 			restaurantZipCode: "8855",
@@ -795,6 +803,7 @@ const users = [
 		userRoles: "cr",
 		orders: [],
 		restaurant: {
+			id: 3265844555400,
 			restaurantName: "Steak House",
 			restaurantAddress: "C/ Umbría 16, Soto del Real, Madrid, España",
 			restaurantZipCode: "8855",
@@ -880,18 +889,18 @@ const users = [
 		id: 33997709,
 		name: "Ramón",
 		lastName: "Salazar Díez",
-		email: "killLeonKennedy@gmail.com",
+		email: "LeonKennedy12@gmail.com",
 		address: "C/ Alaitán 24 2B, Colmenar, Madrid, España",
 		zip: "8778",
 		phone: "3699633580",
 		password: "rZ$8$67&",
-		userRoles: "c",
+		userRoles: "cr",
 		orders: [
 			{
 				id: 45588141,
 				restaurantName: "Steak House",
 				state: "En preparación",
-				date: "22-04-2024",
+				date: "Tue Apr 23 2024 11:28:41 GMT+0200 (hora de verano de Europa central)",
 				products: [
 					{
 						productId: 3232348,
@@ -913,8 +922,136 @@ const users = [
 					},
 				]
 			},
+			{
+				id: 5569988001,
+				restaurantName: "Two Brothers",
+				state: "En reparto",
+				date: "Tue Apr 23 2024 11:25:41 GMT+0200 (hora de verano de Europa central)",
+				products: [
+					{
+						productId: 225564890,
+						name: "Hamburguesa Infarto Seguro",
+						price: 16.99,
+						quantity: 1,
+					},
+					{
+						productId: 2561659999,
+						name: "Hamburguesa Cajuna",
+						price: 9.49,
+						quantity: 1,
+					},
+					{
+						productId: 8585625472,
+						name: "Alitas de Pollo",
+						price: 8.99,
+						quantity: 2,
+					},
+				]
+			},
+			{
+				id: 965556801,
+				restaurantName: "Mama Victoria",
+				state: "Entregado",
+				date: "Tue Mar 15 2024 11:28:41 GMT+0200 (hora de verano de Europa central)",
+				products: [
+					{
+						productId: 658566597,
+						name: "Pizza Pepperoni",
+						price: 10.99,
+						quantity: 2,
+					},
+					{
+						productId: 2121236363,
+						name: "Hamburguesa Vegetariana",
+						price: 10.99,
+						quantity: 1,
+					},
+					{
+						productId: 9598979400,
+						name: "Bocadillo Vegetal",
+						price: 4.99,
+						quantity: 2,
+					},
+				]
+			},
 		],
+		restaurant: {
+			id: 223366998855,
+			restaurantName: "Azteca Palace",
+			restaurantAddress: "C/ Umbría 16, Soto del Real, Madrid, España",
+			restaurantZipCode: "8855",
+			restaurantPhoneNumber: "9368524610",
+			logo: "http://localhost:3000/images/rest_logos/852559413azteca-palace.jpg",
+			orders: [],
+			menu: {
+				categories: [
+					{
+						name: "Entrantes",
+						products: [
+							{
+								id: "4j3kjkkk3j4j46",
+								name: "Guacamole",
+								description: "Aguacate machacado con tomate, cebolla y cilantro",
+								price: 8.99,
+							},
+							{
+								id: "454gfgf45gf12gf",
+								name: "Queso fundido con chorizo",
+								description: "Queso derretido con chorizo picante, servido con tortillas de maíz",
+								price: 10.99,
+							},
+						],
+					},
+					{
+						name: "Platos principales",
+						products: [
+							{
+								id: "jk34jk76jk78j8",
+								name: "Tacos al pastor",
+								description: "Tacos de carne de cerdo adobada, servidos con piña, cebolla y cilantro",
+								price: 12.99,
+							},
+							{
+								id: "4578df45df4534h",
+								name: "Enchiladas verdes",
+								description: "Tortillas de maíz rellenas de pollo, bañadas en salsa verde y gratinadas con queso",
+								price: 11.99,
+							},
+						],
+					},
+					{
+						name: "Postres",
+						products: [
+							{
+								id: "sddfs90sd9gfu23hjef89",
+								name: "Pastel de tres leches",
+								description: "Pastel esponjoso bañado en una mezcla de tres tipos de leche",
+								price: 9.99,
+							},
+							{
+								id: "4389jksd9034klgh",
+								name: "Churros con chocolate",
+								description: "Churros crujientes acompañados de una taza de chocolate caliente",
+								price: 6.99,
+							},
+						],
+					},
+				]
+			}
+		}
 	},
+	{
+		id: 3385004559,
+		name: "Javier",
+		lastName: "Cedán Cortés",
+		email: "cortesCedan24@gmail.com",
+		address: "C/ Alvarado 34 4A, Soto, Madrid, España",
+		zip: "8778",
+		phone: "3699633580",
+		password: "Az%87P_K",
+		userRoles: "c",
+		orders: [],
+	}
 
 ];
 

@@ -5,11 +5,14 @@ function getRestaurantById(id) {
 	let restaurantData = {};
 	
 	users.map( (user) => {
-		if (user.id === id) {
-			restaurantExists = true;
-			restaurantData.restaurantName = user.restaurant.restaurantName;
-			restaurantData.logo = user.restaurant.logo;
-			restaurantData.menu = user.restaurant.menu;
+		if (user.restaurant) {
+			if (user.restaurant.id === id) {
+				restaurantExists = true;
+				restaurantData.idRestaurant = user.restaurant.id,
+				restaurantData.restaurantName = user.restaurant.restaurantName;
+				restaurantData.logo = user.restaurant.logo;
+				restaurantData.menu = user.restaurant.menu;
+			}
 		}
 	});
 

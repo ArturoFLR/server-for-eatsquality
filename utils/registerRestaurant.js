@@ -1,4 +1,5 @@
 const users = require("../data/users");
+const generateId = require("./generateId");
 
 function registerRestaurant (newRestaurantData, restLogo, userEmail) {
 	const userHasRestaurant = checkUserAlreadyHasRestaurant(userEmail);
@@ -6,6 +7,7 @@ function registerRestaurant (newRestaurantData, restLogo, userEmail) {
 
 	if (!userHasRestaurant) {
 		const restaurantData = {
+			id: generateId(),
 			...newRestaurantData,
 			logo: `http://localhost:3000/images/rest_logos/${restLogo}`,
 			orders: [],

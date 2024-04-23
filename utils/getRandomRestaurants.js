@@ -23,6 +23,9 @@ function getRandomRestaurants(amount) {								//Amount es la cantidad de restau
 			id: restaurant.restaurant.id,
 			name: restaurant.restaurant.restaurantName,
 			logo: restaurant.restaurant.logo,
+			address: restaurant.restaurant.restaurantAddress,
+			zip: restaurant.restaurant.restaurantZipCode,
+			phoneNumber: restaurant.restaurant.restaurantPhoneNumber,
 			menu: restaurant.restaurant.menu
 		};
 

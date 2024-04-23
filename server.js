@@ -20,6 +20,7 @@ const users = require("./data/users");
 const getRestaurantById = require("./utils/getRestaurantById");
 const getClientOrders = require("./utils/getClientOrders");
 const addNewOrder = require("./utils/addNewOrder");
+const getAllRestaurants = require("./utils/getAllRestaurants");
 
 
 
@@ -212,6 +213,15 @@ app.post("/restaurant/id", (req, res) => {
 		res.status(404).send( JSON.stringify("No existe ningún restaurante con esa Id") );
 	}
 });
+
+
+//OBTENER UN LISTADO DE TODOS LOS RESTAURANTES
+app.get("/restaurant/all", (req, res) => {
+	const response = getAllRestaurants();
+
+	res.status(200).json(response);
+});
+
 
 
 //CREAR NUEVOS PEDIDOS

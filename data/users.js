@@ -11,7 +11,7 @@ const users = [
 		userRoles: "cr",
 		orders: [],
 		restaurant: {
-			id: 98364547895322,
+			id: 9836010175322,
 			restaurantName: "Comida y Sonrisas",
 			restaurantAddress: "C/ Umbría 16, Soto del Real, Madrid, España",
 			restaurantZipCode: "2984",
@@ -254,7 +254,7 @@ const users = [
 			menu: {
 				categories: [
 					{
-						name: "Aperitivos",
+						name: "Para Picar",
 						products: [
 							{
 								id: "lv6m2vurz44a8v7sifl",
@@ -442,7 +442,7 @@ const users = [
 			menu: {
 				categories: [
 					{
-						name: "Primeros",
+						name: "Platos principales",
 						products: [
 							{
 								id: "lv6m6fu2jb4108v25k",
@@ -465,12 +465,12 @@ const users = [
 						]
 					},
 					{
-						name: "Segundos",
+						name: "Guisos",
 						products: [
 							{
 								id: "lv6m6fuuicgjn1qrrwq",
-								description: "Con patatas y verduras",
-								name: "Pollo Asado",
+								description: "Garbanzos con carnes y verduras",
+								name: "Cocido",
 								price: 12
 							},
 							{
@@ -536,7 +536,7 @@ const users = [
 			menu: {
 				categories: [
 					{
-						name: "Para Compartir",
+						name: "Para Picar",
 						products: [
 							{
 								id: "lv6m7lwior6xcvyahb",
@@ -582,7 +582,7 @@ const users = [
 						]
 					},
 					{
-						name: "Carnes A La Brasa",
+						name: "Carnes",
 						products: [
 							{
 								id: "lv6m8d3pcxs4i7z4a3n",
@@ -690,7 +690,6 @@ const users = [
 								description: "Bocadillo con lechuga, tomate, pepino, pimiento y mayonesa.",
 								price: 4.99
 							},
-							// Puedes agregar más bocadillos aquí según sea necesario
 						]
 					},
 				]
@@ -813,7 +812,7 @@ const users = [
 			menu: {
 				categories: [
 					{
-						name: "Asados",
+						name: "Carnes",
 						products: [
 							{
 								id: "lv6qhnbrnkrnxdsm2n",
@@ -836,7 +835,7 @@ const users = [
 						]
 					},
 					{
-						name: "Entrantes",
+						name: "Para Picar",
 						products: [
 							{
 								id: "lv6reylnbu8kxxnwr2k",
@@ -986,7 +985,7 @@ const users = [
 			menu: {
 				categories: [
 					{
-						name: "Entrantes",
+						name: "Para Picar",
 						products: [
 							{
 								id: "4j3kjkkk3j4j46",

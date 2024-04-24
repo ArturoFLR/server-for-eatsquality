@@ -21,6 +21,8 @@ const getRestaurantById = require("./utils/getRestaurantById");
 const getClientOrders = require("./utils/getClientOrders");
 const addNewOrder = require("./utils/addNewOrder");
 const getAllRestaurants = require("./utils/getAllRestaurants");
+const getRestaurantOrders = require("./utils/getRestaurantOrders");
+const getFoodCategories = require("./utils/getFoodCategories");
 
 
 
@@ -263,40 +265,31 @@ app.get("/client/orders", (req, res) => {
 	}
 });
 
-// GET ALL PUBLICATIONS
-
-// app.get("/publications/all", (req, res) => {
-// 	const userToken = req.cookies.userId;
-// 	const session = SESSIONS.get(userToken);
-
-// 	if (session) {
-// 		const response = getAllPublications();
-// 		res.status(200).json(response);
-// 	} else {
-// 		res.status(400).send( JSON.stringify("You must be registered to access all publications") );
-// 	}
-// });
 
 
-// UPLOAD A NEW PUBLICATION
+//OBTENER PEDIDOS DE UN RESTAURANTE
+app.get("/restaurant/orders", (req, res) => {
+	const userToken = req.cookies.userId;
+	const session = SESSIONS.get(userToken);
 
-// app.post("/publications/upload", (req, res) => {
-// 	const { image } = req.files;
-// 	const userToken = req.cookies.userId;
-// 	const session = SESSIONS.get(userToken);
+	if (session) {
+		try {
+			const response = getRestaurantOrders(session.userMail);
+			res.status(200).json(response);
+		} catch (error) {
+			res.status(409).json(`Error del servidor: ${error.message}`);
+		}
 
-// 	if (session) {
-// 		if (session.userRoles !== "producer" && session.userRoles !== "admin") {
-// 			res.status(400).send( JSON.stringify("You need to be a producer or admin to publish publications") );
-// 		} else {
-// 			image.mv(__dirname + "/public/images/" + image.name);			// Move the uploaded image to our images folder
-		
-// 			createPublication(req.body, session.userMail, image);
-			
-// 			res.status(200).send("Publication created");
-// 		}
+	} else {
+		res.status(401).send( JSON.stringify("El usuario no tiene una sesión activa") );
+	}
+});
 
-// 	} else {
-// 		res.status(400).send( JSON.stringify("No open session for this userId") );
-// 	}
-// });
+
+
+//OBTENER CATEGORÍAS DE COMIDAS (DENTRO DE CADA CATEGORÍA SE OBTIENEN TODOS LOS RESTAURANTES QUE LA TIENEN Y SUS PRODUCTOS)
+app.get("/food/categories", (req, res) => {
+	const response = getFoodCategories();
+
+	res.status(200).json(response);
+});

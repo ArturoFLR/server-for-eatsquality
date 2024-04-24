@@ -23,6 +23,7 @@ const addNewOrder = require("./utils/addNewOrder");
 const getAllRestaurants = require("./utils/getAllRestaurants");
 const getRestaurantOrders = require("./utils/getRestaurantOrders");
 const getFoodCategories = require("./utils/getFoodCategories");
+const changeOrderState = require("./utils/changeOrderState");
 
 
 
@@ -230,10 +231,10 @@ app.get("/restaurant/all", (req, res) => {
 app.post("/orders/new", (req, res) => {
 	const userToken = req.cookies.userId;
 	const session = SESSIONS.get(userToken);
-	const newOrder = req.body;
+	const products = req.body;
 
 	if (session) {
-		const isUpdateOk = addNewOrder(newOrder, session.userMail);
+		const isUpdateOk = addNewOrder(products, session.userMail);
 
 		if (isUpdateOk) {
 			res.status(200).json("Ok");
@@ -284,6 +285,28 @@ app.get("/restaurant/orders", (req, res) => {
 		res.status(401).send( JSON.stringify("El usuario no tiene una sesión activa") );
 	}
 });
+
+
+//CAMBIAR ESTADO DE UN PEDIDO
+app.post("/orders/state", (req, res) => {
+	const userToken = req.cookies.userId;
+	const session = SESSIONS.get(userToken);
+	const newOrderState = req.body;									//{orderId: number, state: "string"}
+
+	if (session) {
+		const isUpdateOk = changeOrderState(newOrderState, session.userMail);
+
+		if (isUpdateOk) {
+			res.status(200).json("Ok");
+		} else {
+			res.status(409).json("Usuario no es restaurante, o no es el propietario del pedido");
+		}
+
+	} else {
+		res.status(401).send( JSON.stringify("El usuario no tiene una sesión activa") );
+	}
+});
+
 
 
 

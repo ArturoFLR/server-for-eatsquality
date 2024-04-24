@@ -1,37 +1,54 @@
 const users = require("../data/users");
 const generateId = require("./generateId");
 
-function addNewOrder (newOrders, clientEmail) {
-	addOrderToClient(newOrders, clientEmail);
-	addOrderToRestaurant(newOrders, clientEmail);
+function addNewOrder (newProducts, clientEmail) {
+	let user = {};
+
+	users.map( (element) => {
+		if (element.email === clientEmail) {
+			user = element;
+		}
+	});
+
+	const ordersStructure = getOrdersStructure(newProducts, user);
+
+	addOrderToClient(newProducts, clientEmail, ordersStructure.ordersForClient);
+	addOrderToRestaurant(newProducts, ordersStructure.ordersForRestaurants);
 
 	return true;
 }
 
-//Devuelve un array con los diferentes restaurantes que hay en el pedido, metidos dentro de un objeto que servirá como contenedor de los pedidos. Format indica si hay que generarlos con el formato que necesita un cliente o el que necesita un restaurante.
-function getRestaurants (newOrders, format, user) {
-	const restaurants = [];
+//Devuelve un objeto que contiene la estructura del pedido o pedidos para el cliente (a falta de meter los productos) y para el o los restaurantes (a falta de meter los productos)
+function getOrdersStructure (newProducts, user) {
+	const ordersForClient = [];
+	const ordersForRestaurants = [];
 	const date = new Date();
 	const simpleDate = date.toLocaleString("es-AR");
 
-	newOrders.map( (order) => {
-		const isRestaurantAdded = restaurants.findIndex( (element) => {
-			return element.restaurantName === order.nameRestaurant;
+	newProducts.map( (product) => {
+		const orderId = generateId();
+		const isRestaurantInOrdersForClient = ordersForClient.findIndex( (element) => {
+			return element.restaurantName === product.nameRestaurant;
+		});
+		const isRestaurantInOrdersForRestaurants = ordersForRestaurants.findIndex( (element) => {
+			return element.restaurantName === product.nameRestaurant;
 		});
 
-		if (isRestaurantAdded < 0 && format === "c") {
-			const newRestaurant = {
-				id: generateId(),
-				restaurantName: order.nameRestaurant,
+		if (isRestaurantInOrdersForClient < 0) {
+			const newOrder = {
+				id: orderId,
+				restaurantName: product.nameRestaurant,
 				state: "En preparación",
 				date: simpleDate,
 				products: []
 			};
 
-			restaurants.push(newRestaurant);
-		} else if (isRestaurantAdded < 0 && format === "r"){
-			const newRestaurant = {
-				id: generateId(),
+			ordersForClient.push(newOrder);
+		}
+
+		if (isRestaurantInOrdersForRestaurants < 0){
+			const newOrder = {
+				id: orderId,
 				clientName: user.name + " " + user.lastName,
 				clientPhone: user.phone,
 				clientAddress: user.address,
@@ -41,74 +58,68 @@ function getRestaurants (newOrders, format, user) {
 				products: []
 			};
 
-			restaurants.push(newRestaurant);
+			ordersForRestaurants.push(newOrder);
 		}
 	});
 
-	return restaurants;
+	return {
+		ordersForClient: ordersForClient,
+		ordersForRestaurants: ordersForRestaurants
+	};
 }
 
 
-//Añade al cliente un nuevo pedido por cada restaurante
-function addOrderToClient (newOrders, clientEmail) {
-	const restaurants = getRestaurants(newOrders, "c"); 
+//Añade al cliente un nuevo pedido por cada pedido creado por getOrdersStructure para el cliente.
+function addOrderToClient (newProducts, clientEmail, ordersStructure) {
 
-	restaurants.map( (restaurant) => {
-		newOrders.map( (order) => {
-			if (restaurant.restaurantName === order.nameRestaurant) {
+	ordersStructure.map( (order) => {
+		newProducts.map( (product) => {
+			if (product.nameRestaurant === order.restaurantName) {
 				const newProduct = {
-					productId: order.idProduct,
-					name: order.nameProduct,
-					price: order.price,
-					quantity: order.quantity,
+					productId: product.idProduct,
+					name: product.nameProduct,
+					price: product.price,
+					quantity: product.quantity,
 				};
 
-				restaurant.products.push(newProduct);
+				order.products.push(newProduct);
 			}
 		});
 	});
 
 	users.map( (user) => {
 		if (user.email === clientEmail) {
-			for (let index = 0; index < restaurants.length; index++) {
-				user.orders.push(restaurants[index]); 
+			for (let index = 0; index < ordersStructure.length; index++) {
+				user.orders.push(ordersStructure[index]); 
 			}
 		}
 	});
 }
 
 
-//Añade a cada restaurante su pedido
-function addOrderToRestaurant (newOrders, clientEmail) {
-	let user = {};
-	users.map( (element) => {
-		if (element.email === clientEmail) {
-			user = element;
-		}
-	});
+//Añade a cada restaurante su pedido creado por getOrdersStructure
+function addOrderToRestaurant (newProducts, ordersStructure) {
 
-	const restaurants = getRestaurants(newOrders, "r", user);
-
-	restaurants.map( (restaurant) => {
-		newOrders.map( (order) => {
-			if (restaurant.restaurantName === order.nameRestaurant) {
+	ordersStructure.map( (order) => {
+		newProducts.map( (product) => {
+			if (order.restaurantName === product.nameRestaurant) {
 				const newProduct = {
-					productId: order.idProduct,
-					name: order.nameProduct,
-					price: order.price,
-					quantity: order.quantity,
+					productId: product.idProduct,
+					name: product.nameProduct,
+					price: product.price,
+					quantity: product.quantity,
 				};
 
-				restaurant.products.push(newProduct);
+				order.products.push(newProduct);
 			}
 		});
 	});
 
-	restaurants.map( (restaurant) => {
+	ordersStructure.map( (order) => {
 		users.map( (user) => {
 			if (user.restaurant) {
-				if (user.restaurant.restaurantName === restaurant.restaurantName) {
-					user.restaurant.orders.push(restaurant);
+				if (user.restaurant.restaurantName === order.restaurantName) {
+					user.restaurant.orders.push(order);
 				}
 			}
 		});

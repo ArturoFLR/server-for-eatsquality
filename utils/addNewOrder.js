@@ -46,9 +46,10 @@ function getOrdersStructure (newProducts, user) {
 			ordersForClient.push(newOrder);
 		}
 
-		if (isRestaurantInOrdersForRestaurants < 0){
+		if (isRestaurantInOrdersForRestaurants < 0) {
 			const newOrder = {
 				id: orderId,
+				restaurantName: product.nameRestaurant,
 				clientName: user.name + " " + user.lastName,
 				clientPhone: user.phone,
 				clientAddress: user.address,

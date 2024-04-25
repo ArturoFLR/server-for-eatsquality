@@ -42,6 +42,7 @@ function getFoodCategory(restaurantId, categoryToSearch) {
 								idRestaurant: user.restaurant.id,
 								nameRestaurant: user.restaurant.restaurantName,
 								nameProduct: product.name,
+								productDescription: product.description,
 								imgRestaurant: user.restaurant.logo,
 								price: product.price,
 							};

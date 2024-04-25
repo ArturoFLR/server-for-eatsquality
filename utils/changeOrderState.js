@@ -18,12 +18,13 @@ function changeOrderState (newOrderState, userEmail) {
 			if (user.restaurant) {
 				user.restaurant.orders.map( (order) => {
 					if (order.id === orderId) {
-						order.state === state;
+						order.state = state;
 					}
 				});
 			}
 		});
 	}
+
 
 	if (!isRestaurant || !isOwner) {
 		return false;
